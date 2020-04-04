@@ -4,19 +4,60 @@
 package com.rcanto.ggrep;
 
 import java.io.*;
-import java.util.Vector;
+import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
 public class App
 {
+	private static JFrame jf = null;
+	private static JPanel jp = null;
+	private static JLabel jl1 = null;
+	private static JLabel jl2 = null;
+	private static JTextField jtf1 = null;
+	private static JTextField jtf2 = null;
+	private static JButton jb = null;
+	private static JTextArea jta = null;
 	public static void main(String[] args)
-	{
+	{/*
 		if(args.length < 2)
 		{
 			System.out.println("Debes especificar el patrón y el nombre del fichero");
 			System.exit(0);
 		}
-		Vector v = compruebaLineas(args[1],args[0]);
+		Vector<String> v = compruebaLineas(args[1],args[0]);
 		for (String s: v)
-			System.out.println(s);
+			System.out.println(s);*/
+		jf = new JFrame("GRAPHIC GREP");
+		jp = new JPanel(new GridLayout(3,2));
+		jf.add(jp);
+		jp.add(jl1 = new JLabel("Pattern search:"));
+		jp.add(jtf1 = new JTextField());
+		jp.add(jl2 = new JLabel("Path to file:"));
+		jp.add(jtf2 = new JTextField());
+		jp.add(jb = new JButton("Muestra líneas"));
+		jp.add(jta = new JTextArea());
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jf.setVisible(true);
+		jf.pack();
+		jf.setLocationRelativeTo(null);
+		jb.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			{
+				if (jtf2.getText().isEmpty())
+				{
+					Vector v=null;
+					v = compruebaLineas(jtf2.getText(),jtf1.getText());
+					Iterator<String> it = v.iterator();
+					jta.setText("");
+					while ( it.hasNext())
+						jta.append(it.next()+"\n");
+				}
+				else
+					jta.setText("");
+			}
+		});
 	}
 
 	public static Vector<String> compruebaLineas(String file,String patr)
