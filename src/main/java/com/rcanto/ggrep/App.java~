@@ -9,26 +9,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class App
+class window implements ActionListener
 {
-	private static JFrame jf = null;
-	private static JPanel jp = null;
-	private static JLabel jl1 = null;
-	private static JLabel jl2 = null;
-	private static JTextField jtf1 = null;
-	private static JTextField jtf2 = null;
-	private static JButton jb = null;
-	private static JTextArea jta = null;
-	public static void main(String[] args)
+	private JFrame jf = null;
+	private JPanel jp = null;
+	private JLabel jl1 = null;
+	private JLabel jl2 = null;
+	private JTextField jtf1 = null;
+	private JTextField jtf2 = null;
+	private JButton jb = null;
+	private JTextArea jta = null;
+
+	public  void run()
 	{/*
-		if(args.length < 2)
+/*		if(args.length < 2)
 		{
 			System.out.println("Debes especificar el patrón y el nombre del fichero");
 			System.exit(0);
-		}
+		}*/
 		Vector<String> v = compruebaLineas(args[1],args[0]);
 		for (String s: v)
-			System.out.println(s);*/
+			System.out.println(s);
 		jf = new JFrame("GRAPHIC GREP");
 		jp = new JPanel(new GridLayout(3,2));
 		jf.add(jp);
@@ -42,22 +43,24 @@ public class App
 		jf.setVisible(true);
 		jf.pack();
 		jf.setLocationRelativeTo(null);
-		jb.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e)
-			{
-				if (jtf2.getText().isEmpty())
-				{
-					Vector v=null;
-					v = compruebaLineas(jtf2.getText(),jtf1.getText());
-					Iterator<String> it = v.iterator();
-					jta.setText("");
-					while ( it.hasNext())
-						jta.append(it.next()+"\n");
-				}
-				else
-					jta.setText("");
-			}
-		});
+		jb.addActionListener(this);
+//				new ActionListener(){
+//	});
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{
+		if (!jtf2.getText().isEmpty())
+		{
+			Vector v=null;
+			v = compruebaLineas(jtf2.getText(),jtf1.getText());
+			Iterator<String> it = v.iterator();
+			jta.setText("");
+			while ( it.hasNext())
+				jta.append(it.next()+"\n");
+		}
+		else
+			jta.setText("");
 	}
 
 	public static Vector<String> compruebaLineas(String file,String patr)
@@ -91,5 +94,13 @@ public class App
 			System.out.println("IOException");
 			return null;
 		}
+	}
+}
+
+public class App
+{
+	public static void main(String[] args) {
+		window w = new window();
+		w.run();
 	}
 }
